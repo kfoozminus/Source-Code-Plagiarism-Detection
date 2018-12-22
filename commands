@@ -1,0 +1,12 @@
+#!/bin/bash
+
+bison -d parser.y
+flex lexer.l
+g++ parser.tab.c lex.yy.c -o tokenize
+g++ pdWin.cpp -o pd
+mkdir tokens
+ls *.c *.cpp *.cc > filenames
+while read p; do
+	./tokenize < $p > tokens/$p
+done < filenames
+time ./pd . 7 4
